@@ -5,15 +5,15 @@
 </picture>
 </div>
 
-# SuperNeuroMAT
+# SuperNeuroMAT FORK
 
-### The Super Speedy Spike Simulator.
+### A Super Speedy Spike Simulator.
 
 SuperNeuroMAT is a Python package for simulating and analyzing spiking neural networks.
 
-[![Tox: Selected Tests](https://github.com/ORNL/superneuromat/actions/workflows/test.yaml/badge.svg)](https://github.com/ORNL/superneuromat/actions/workflows/test.yaml)
-[![Sphinx: Build HTML](https://github.com/ORNL/superneuromat/actions/workflows/pages-build.yaml/badge.svg)](https://github.com/ORNL/superneuromat/actions/workflows/pages-build.yaml)
-[![Build & Upload Python Package](https://github.com/ORNL/superneuromat/actions/workflows/pypi-release.yml/badge.svg)](https://github.com/ORNL/superneuromat/actions/workflows/pypi-release.yml)
+[![Original SuperNeuroMAT: Tox: Selected Tests](https://github.com/ORNL/superneuromat/actions/workflows/test.yaml/badge.svg)](https://github.com/ORNL/superneuromat/actions/workflows/test.yaml)
+[![Original SuperNeuroMAT: Sphinx: Build HTML](https://github.com/ORNL/superneuromat/actions/workflows/pages-build.yaml/badge.svg)](https://github.com/ORNL/superneuromat/actions/workflows/pages-build.yaml)
+[![Original SuperNeuroMAT: Build & Upload Python Package](https://github.com/ORNL/superneuromat/actions/workflows/pypi-release.yml/badge.svg)](https://github.com/ORNL/superneuromat/actions/workflows/pypi-release.yml)
 
 Documentation available: https://ORNL.github.io/superneuromat/
 
@@ -24,15 +24,20 @@ of the network, which allows for more efficient simulation and GPU acceleration.
 
 SuperNeuroMAT focuses on super-fast computation of Leaky Integrate and Fire **(LIF)** spiking neuron models with STDP.
 
+This fork tries to add the behavior shown in this chart/graph/thing
+[<img src="https://journals.plos.org/ploscompbiol/article/figure/image?size=inline&id=10.1371/journal.pcbi.1000180.g001">]()
+(Found in this paper https://doi.org/10.1371/journal.pcbi.1000180)
+
 It provides:
 1. Support for leaky integrate and fire neuron model with the following parameters:
   * neuron threshold
   * neuron leak
   * neuron refractory period
-2. Support for Spiking-Time-Dependent Plasticity (STDP) on synapses with:
+2. Support for Reward-Modulated Spiking-Time-Dependent Plasticity (STDP) on synapses with:
   * weight
   * delay
   * per-synapse disabling of learning
+  * a bare minimum implementation of reward modulation
 3. Support for all-to-all connections as well as self connections
 4. A turing-complete model of neuromorphic computing
 5. Optional GPU acceleration or Optional Sparse computation
@@ -42,8 +47,8 @@ such as [SuperNeuroABM](https://github.com/ORNL/superneuroabm) for longer delays
 
 
 ## Installation
-1. Install using `pip install superneuromat`
-2. Update/upgrade using `pip install superneuromat --upgrade`
+1. Install the original using `pip install superneuromat`
+2. Update/upgrade the original using `pip install superneuromat --upgrade`
 
 The [installation guide](https://ORNL.github.io/superneuromat/guide/install.html)
 covers virtual environments, faster installation with uv, installing support for CUDA GPU acceleration, and more.
@@ -60,7 +65,7 @@ See the [tutorial](https://ORNL.github.io/superneuromat/guide/firstrun.html) for
 Additionally, the [migration guide](https://ornl.github.io/superneuromat/guide/migration2.html) may be of use to those coming from older versions of SuperNeuroMAT.
 
 ## Citation
-1. Please cite SuperNeuroMAT using:
+1. Please cite the original SuperNeuroMAT using:
 	```
 	@inproceedings{date2023superneuro,
 	  title={SuperNeuro: A fast and scalable simulator for neuromorphic computing},
@@ -70,7 +75,7 @@ Additionally, the [migration guide](https://ornl.github.io/superneuromat/guide/m
 	  year={2023}
 	}
 	```
-2. References for SuperNeuroMAT:
+2. References for the original SuperNeuroMAT:
 	- [SuperNeuro: A Fast and Scalable Simulator for Neuromorphic Computing](https://dl.acm.org/doi/abs/10.1145/3589737.3606000)
 	- [Neuromorphic Computing is Turing-Complete](https://dl.acm.org/doi/abs/10.1145/3546790.3546806)
 	- [Computational Complexity of Neuromorphic Algorithms](https://dl.acm.org/doi/abs/10.1145/3477145.3477154)
