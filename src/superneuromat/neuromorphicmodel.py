@@ -117,6 +117,9 @@ class SNN:
         # Input spikes (can have a value)
         self.input_spikes = {}
 
+        # Rewards (can have a value)
+        self.rewards = {}
+
         # Spike trains (monitoring all neurons)
         self.spike_train = []
 
@@ -125,6 +128,7 @@ class SNN:
         self.stdp = True
         self.apos = []
         self.aneg = []
+        self.synaptic_eligibility = [] #TODO
         self._stdp_Apos = np.array([])
         self._stdp_Aneg = np.array([])
         self._do_stdp = False
@@ -1216,6 +1220,70 @@ class SNN:
         self.input_spikes[time]["nids"].append(neuron_id)
         self.input_spikes[time]["values"].append(value)
 
+    def add_reward(
+        self,
+        time: int,
+        value: float = 1.0,
+        exist: str = "add",
+    ) -> None:
+        """Adds an external spike in the SNN
+
+        Parameters
+        ----------
+        time : int
+            The time step at which the external reward is added
+        value : float
+            The value of the external reward (default: 1.0)
+        exist : str
+            action for existing rewards at a given time step.
+            Should be one of ['error', 'overwrite', 'add', 'dontadd']. (default: 'add')
+
+            if exist='add', the existing spike value is added to the new value.
+
+        Raises
+        ------
+        TypeError
+            if:
+
+            * time cannot be precisely cast to int
+            * value is not an int or float
+
+        ValueError
+            if spike already exists at that neuron and timestep and exist='error',
+            or if exist is an invalid setting.
+        """
+
+        # input validation
+        fname = 'add_reward()'
+        time = int_err(time, 'time', fname)
+        value = float_err(value, 'value', fname)
+
+        if time < 0:
+            raise ValueError("time must be greater than or equal to zero.")
+
+        # Ensure data structure exists for the requested time
+        if time not in self.rewards:
+            self.rewards[time] = value
+
+        if time in self.rewards:  # queued spike already exists
+            if not isinstance(exist, str):
+                raise TypeError("duplicate must be a string")
+            exist = exist.lower()
+            if exist == "error":
+                msg = f"add_reward() encountered existing reward at time {time}. "
+                msg += "If this was intentional, pass arg exist='add', 'dontadd', 'overwrite'."
+                raise ValueError(msg)
+            elif exist == "overwrite":
+                self.rewards[time] = value
+            elif exist == "add":
+                self.rewards[time] += value
+            elif exist == "dontadd":
+                return
+            else:
+                msg = f"Invalid value for exist: {exist}. Expected 'error', 'overwrite', 'add', or 'dontadd'."
+                raise ValueError(msg)
+            return  # prevent fall-through if user catches the error
+
     def stdp_setup(
         self,
         Apos: list | None = None,
@@ -1569,7 +1637,7 @@ class SNN:
         if remove_empty:
             self.input_spikes = {k: v for k, v in self.input_spikes.items() if v['nids'] and v['values']}
 
-    def reset(self):
+    def reset(self): #TODO: change
         """Reset the SNN's neuron states, refractory periods, spike train, and input spikes.
 
         Equivalent to:
@@ -1599,7 +1667,7 @@ class SNN:
             self.clear_input_spikes()
         self.restore()
 
-    def restore(self, *args):
+    def restore(self, *args): #TODO: change
         """Restore model variables to their memoized states.
 
         Parameters
@@ -1978,7 +2046,7 @@ class SNN:
     def recommend_sparsity(self):
         return self.weight_sparsity() < self.sparsity_threshold and self.num_neurons > 100
 
-    def simulate(self, time_steps: int = 1, callback=None, use=None, sparse=None, **kwargs) -> None:
+    def simulate(self, time_steps: int = 1, callback=None, use=None, sparse=None, **kwargs) -> None: #TODO: change
         """Simulate the neuromorphic spiking neural network
 
         Parameters
@@ -2103,7 +2171,7 @@ class SNN:
             self.devec()
             self.consume_input_spikes(time_steps)
 
-    def simulate_cpu(self, time_steps: int = 1000, callback=None) -> None:
+    def simulate_cpu(self, time_steps: int = 1000, callback=None) -> None: #TODO: change
         self._last_used_backend = 'cpu'
 
         if self._do_stdp:
@@ -2402,7 +2470,7 @@ class SNN:
         # this way we can return False early if any of the above comparisons fail.
         return True
 
-    def memoize(self, *keys):
+    def memoize(self, *keys): #TODO: change
         """Store a copy of model variable(s) to be restored later.
 
         Parameters
